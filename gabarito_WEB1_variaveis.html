@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>📚 WEB1 — Variáveis CSS · Material de Apoio</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0d0f14;
+      --surface: #151820;
+      --card: #1c2030;
+      --border: #2a2f42;
+      --accent: #7c6dfa;
+      --accent2: #fa6d8a;
+      --accent3: #6dfabc;
+      --text: #e4e8f7;
+      --muted: #8892b0;
+      --code-bg: #111420;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Syne', sans-serif;
+      line-height: 1.6;
+    }
+
+    header {
+      background: linear-gradient(135deg, #0d1a2e 0%, #1a1030 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 2.5rem 2rem 2rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 30% 50%, rgba(109,250,188,0.12) 0%, transparent 60%),
+                  radial-gradient(ellipse at 70% 30%, rgba(124,109,250,0.1) 0%, transparent 50%);
+      pointer-events: none;
+    }
+    header h1 {
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      background: linear-gradient(90deg, #6dfabc, #7c6dfa, #fa6d8a);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      position: relative;
+    }
+    header p {
+      color: var(--muted);
+      margin-top: .5rem;
+      font-size: .95rem;
+      position: relative;
+    }
+
+    nav {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: .8rem 2rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: .5rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    nav a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: .8rem;
+      font-weight: 700;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      padding: .3rem .7rem;
+      border-radius: 4px;
+      border: 1px solid transparent;
+      transition: all .2s;
+    }
+    nav a:hover { color: var(--accent3); border-color: var(--accent3); background: rgba(109,250,188,.08); }
+
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 4rem;
+    }
+
+    section { margin-bottom: 3.5rem; }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .section-tag {
+      font-size: .7rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      padding: .25rem .6rem;
+      border-radius: 4px;
+    }
+    .tag-var    { background: rgba(109,250,188,.1); color: #6dfabc; }
+    .tag-scope  { background: rgba(124,109,250,.1); color: #a09cf7; }
+    .tag-dark   { background: rgba(250,109,138,.1); color: #fa6d8a; }
+
+    .section-title {
+      font-size: 1.5rem;
+      font-weight: 800;
+      letter-spacing: -.01em;
+    }
+
+    .concept {
+      background: rgba(109,250,188,.05);
+      border: 1px solid rgba(109,250,188,.2);
+      border-radius: 10px;
+      padding: 1.2rem 1.4rem;
+      margin-bottom: 1.5rem;
+      font-size: .88rem;
+    }
+    .concept h4 {
+      color: var(--accent3);
+      font-size: .8rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin-bottom: .6rem;
+    }
+    .concept ul { padding-left: 1.2rem; }
+    .concept li { margin-bottom: .35rem; color: var(--text); }
+    .concept code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .8em;
+      background: rgba(255,255,255,.06);
+      padding: .1em .4em;
+      border-radius: 3px;
+      color: #6dfabc;
+    }
+
+    .example {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      margin-bottom: 1.5rem;
+      overflow: hidden;
+    }
+    .example-title {
+      padding: .7rem 1.2rem;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      font-size: .85rem;
+      font-weight: 700;
+      color: var(--muted);
+      letter-spacing: .04em;
+    }
+    .example-title span { color: var(--text); }
+
+    .example-body {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+    }
+    @media(max-width:700px) { .example-body { grid-template-columns: 1fr; } }
+
+    .preview-wrap {
+      border-right: 1px solid var(--border);
+      padding: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 160px;
+      background: #0a0c12;
+      flex-direction: column;
+      gap: .8rem;
+    }
+    @media(max-width:700px) { .preview-wrap { border-right: none; border-bottom: 1px solid var(--border); } }
+
+    .code-cols { padding: 1rem 1.2rem; overflow-x: auto; }
+
+    .code-label {
+      font-size: .65rem;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--accent3);
+      margin-bottom: .3rem;
+      margin-top: .6rem;
+    }
+    .code-label:first-child { margin-top: 0; }
+
+    pre {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .72rem;
+      line-height: 1.65;
+      color: #ccd6f6;
+      background: var(--code-bg);
+      padding: .8rem 1rem;
+      border-radius: 8px;
+      overflow-x: auto;
+      margin-bottom: .4rem;
+      border: 1px solid var(--border);
+      white-space: pre;
+    }
+
+    .table-wrap {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 1.5rem;
+    }
+    table { width: 100%; border-collapse: collapse; font-size: .82rem; }
+    th {
+      background: var(--surface);
+      color: var(--accent3);
+      font-weight: 700;
+      font-size: .7rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      padding: .6rem 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    td {
+      padding: .55rem 1rem;
+      border-bottom: 1px solid rgba(42,47,66,.6);
+      vertical-align: top;
+    }
+    tr:last-child td { border-bottom: none; }
+    td:first-child { font-family: 'JetBrains Mono', monospace; font-size: .78rem; color: #6dfabc; }
+
+    .cheat {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .cheat h4 {
+      font-size: .8rem;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: var(--accent2);
+      margin-bottom: 1rem;
+    }
+    .cheat pre {
+      background: transparent;
+      border: none;
+      padding: 0;
+      font-size: .74rem;
+    }
+
+    /* ===== DEMO: Layout com variáveis ===== */
+    .demo-root {
+      --espaco: 16px;
+      --cor-caixa: #2ecc71;
+      --borda-radius: 10px;
+    }
+    .demo-container {
+      display: flex;
+      gap: var(--espaco);
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .demo-box-var {
+      background-color: var(--cor-caixa);
+      color: white;
+      padding: var(--espaco);
+      border-radius: var(--borda-radius);
+      flex: 1;
+      min-width: 70px;
+      max-width: 120px;
+      text-align: center;
+      box-shadow: 0 2px 6px rgba(0,0,0,.4);
+      font-size: .8rem;
+      font-weight: 700;
+    }
+
+    /* ===== DEMO: controles ao vivo ===== */
+    .controls {
+      display: flex;
+      flex-direction: column;
+      gap: .5rem;
+      width: 100%;
+      font-size: .75rem;
+      color: var(--muted);
+    }
+    .controls label { display: flex; align-items: center; justify-content: space-between; gap: .5rem; }
+    .controls input[type=color] { width: 36px; height: 24px; border: none; background: none; cursor: pointer; }
+    .controls input[type=range] { flex: 1; }
+
+    /* ===== DEMO: Dark mode toggle ===== */
+    /* checkbox escondido */
+    #demo-tema {
+      position: absolute;
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .demo-theme-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      width: 100%;
+    }
+
+    /* slider toggle */
+    .demo-switch-label {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      font-size: .75rem;
+      color: var(--muted);
+      user-select: none;
+    }
+    .demo-slider {
+      width: 50px;
+      height: 24px;
+      background-color: #444;
+      border-radius: 24px;
+      position: relative;
+      transition: background 0.3s;
+      flex-shrink: 0;
+    }
+    .demo-slider::before {
+      content: "";
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      left: 2px;
+      top: 2px;
+      background-color: white;
+      border-radius: 50%;
+      transition: transform 0.3s;
+    }
+    #demo-tema:checked + .demo-switch-label .demo-slider { background-color: #7c6dfa; }
+    #demo-tema:checked + .demo-switch-label .demo-slider::before { transform: translateX(26px); }
+
+    /* o conteúdo que muda de tema */
+    .demo-conteudo {
+      --cor-fundo: #f5f5f5;
+      --cor-texto: #111;
+      background-color: var(--cor-fundo);
+      color: var(--cor-texto);
+      padding: 1rem 1.5rem;
+      border-radius: 10px;
+      text-align: center;
+      transition: background 0.5s, color 0.5s;
+      font-size: .82rem;
+      width: 100%;
+    }
+    /* quando o checkbox estiver marcado, o ~ irmão .demo-conteudo muda as variáveis */
+    #demo-tema:checked ~ .demo-theme-wrap .demo-conteudo {
+      --cor-fundo: #1a1a1a;
+      --cor-texto: #f0f0f0;
+    }
+    .demo-conteudo h3 { margin-bottom: .3rem; font-size: .9rem; }
+
+    /* scope demo */
+    .scope-pai {
+      --cor: #e74c3c;
+      padding: 1rem;
+      background: rgba(231,76,60,.1);
+      border: 1px dashed #e74c3c;
+      border-radius: 8px;
+      font-size: .8rem;
+      text-align: center;
+      color: var(--cor);
+      font-weight: 700;
+      width: 100%;
+    }
+    .scope-filho {
+      --cor: #3498db;
+      margin-top: .5rem;
+      padding: .7rem;
+      background: rgba(52,152,219,.1);
+      border: 1px dashed #3498db;
+      border-radius: 6px;
+      color: var(--cor);
+    }
+    .scope-neto {
+      /* herda --cor do .scope-filho */
+      margin-top: .5rem;
+      padding: .5rem;
+      background: rgba(52,152,219,.06);
+      border: 1px dashed #3498db55;
+      border-radius: 4px;
+      color: var(--cor);
+      font-weight: 400;
+    }
+
+    /* fallback demo */
+    .demo-fallback {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .78rem;
+      padding: .8rem 1rem;
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: #ccd6f6;
+      width: 100%;
+    }
+    .fb-green { color: #6dfabc; }
+    .fb-red   { color: #fa6d8a; }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>📚 WEB1 — Variáveis CSS</h1>
+  <p>Material de apoio · Custom Properties · :root · var() · escopo · dark mode sem JS</p>
+</header>
+
+<nav>
+  <a href="#conceito">Conceito</a>
+  <a href="#sintaxe">Sintaxe</a>
+  <a href="#ex-var2">Layout com Variáveis</a>
+  <a href="#ex-var3">Dark Mode Toggle</a>
+  <a href="#escopo">Escopo</a>
+  <a href="#fallback">Fallback</a>
+  <a href="#resumo">Resumo</a>
+</nav>
+
+<main>
+
+<!-- ===== CONCEITO ===== -->
+<section id="conceito">
+  <div class="section-header">
+    <span class="section-tag tag-var">CSS</span>
+    <h2 class="section-title">O que são variáveis CSS?</h2>
+  </div>
+
+  <div class="concept">
+    <h4>🧠 Conceito</h4>
+    <ul>
+      <li>Variáveis CSS se chamam <strong>Custom Properties</strong> (propriedades customizadas).</li>
+      <li>São declaradas com dois hífens: <code>--nome-da-variavel: valor;</code></li>
+      <li>São usadas com a função <code>var(--nome)</code>.</li>
+      <li>Normalmente declaradas em <code>:root</code> para ficarem disponíveis em todo o documento.</li>
+      <li>Diferente de variáveis SASS/LESS: as CSS são dinâmicas — mudam em tempo real no navegador.</li>
+      <li>Herdam valor do elemento pai (são afetadas pelo escopo do DOM).</li>
+    </ul>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <tr><th>Etapa</th><th>Código</th><th>Significado</th></tr>
+      <tr><td>Declarar</td><td>--cor-primaria: #2ecc71;</td><td>Define a variável (geralmente no :root)</td></tr>
+      <tr><td>Usar</td><td>color: var(--cor-primaria);</td><td>Lê o valor da variável</td></tr>
+      <tr><td>Fallback</td><td>color: var(--cor, red);</td><td>Se a variável não existir, usa "red"</td></tr>
+      <tr><td>Sobrescrever</td><td>.card { --cor: blue; }</td><td>Redefine localmente para aquele elemento e filhos</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- ===== SINTAXE ===== -->
+<section id="sintaxe">
+  <div class="section-header">
+    <span class="section-tag tag-var">CSS</span>
+    <h2 class="section-title">Sintaxe completa</h2>
+  </div>
+
+  <div class="cheat">
+    <h4>📝 Estrutura básica</h4>
+    <pre>/* 1. Declarar no :root (disponível globalmente) */
+:root {
+  --cor-primaria: #2ecc71;
+  --espaco:       20px;
+  --borda-radius: 10px;
+  --fonte:        'Arial', sans-serif;
+}
+
+/* 2. Usar com var() */
+.elemento {
+  background-color: var(--cor-primaria);
+  padding:          var(--espaco);
+  border-radius:    var(--borda-radius);
+  font-family:      var(--fonte);
+}
+
+/* 3. Fallback: segundo argumento de var() */
+color: var(--cor-inexistente, black);
+/*                            ↑ usado se a variável não existir */
+
+/* 4. Reutilizar a variável em cálculos */
+margin: calc(var(--espaco) * 2);
+padding: calc(var(--espaco) / 2);</pre>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <tr><th>Ponto</th><th>Detalhe</th></tr>
+      <tr><td>Nome</td><td>Sempre começa com -- (dois hífens). Ex: --minha-cor</td></tr>
+      <tr><td>Case-sensitive</td><td>--Cor ≠ --cor (maiúsculas importam)</td></tr>
+      <tr><td>Valor</td><td>Pode ser qualquer valor CSS: cor, tamanho, string, etc.</td></tr>
+      <tr><td>:root</td><td>Pseudo-classe que representa o elemento &lt;html&gt; — mais genérico que html{}</td></tr>
+      <tr><td>Herança</td><td>Filhos herdam as variáveis do pai automaticamente</td></tr>
+      <tr><td>var()</td><td>Função que lê a variável. Aceita fallback: var(--x, valorPadrao)</td></tr>
+      <tr><td>calc()</td><td>Permite usar variáveis em operações matemáticas</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- ===== EX-VAR2 ===== -->
+<section id="ex-var2">
+  <div class="section-header">
+    <span class="section-tag tag-var">exemplo-var2</span>
+    <h2 class="section-title">Layout com Variáveis</h2>
+  </div>
+
+  <div class="example">
+    <div class="example-title">📁 style.css + index.html — <span>Caixas usando variáveis de espaço, cor e borda</span></div>
+    <div class="example-body">
+      <div class="preview-wrap">
+        <div class="demo-root demo-container">
+          <div class="demo-box-var">Caixa 1</div>
+          <div class="demo-box-var">Caixa 2</div>
+          <div class="demo-box-var">Caixa 3</div>
+        </div>
+      </div>
+      <div class="code-cols">
+        <div class="code-label">CSS — style.css</div>
+        <pre>:root {
+  --espaco:       20px;
+  --cor-caixa:   #2ecc71;
+  --borda-radius: 10px;
+}
+
+body {
+  margin: 0;
+  font-family: sans-serif;
+  padding: var(--espaco);  /* usa variável */
+}
+
+.container {
+  display: flex;
+  gap: var(--espaco);      /* mesma variável */
+}
+
+.box {
+  background-color: var(--cor-caixa);
+  color: white;
+  padding: var(--espaco);  /* mesmo espaçamento */
+  border-radius: var(--borda-radius);
+  flex: 1;
+  min-width: 200px;
+  max-width: 400px;
+  text-align: center;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.4);
+}</pre>
+        <div class="code-label">HTML — index.html</div>
+        <pre>&lt;div class="container"&gt;
+  &lt;div class="box"&gt;Caixa 1&lt;/div&gt;
+  &lt;div class="box"&gt;Caixa 2&lt;/div&gt;
+  &lt;div class="box"&gt;Caixa 3&lt;/div&gt;
+&lt;/div&gt;</pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="concept">
+    <h4>💡 Por que usar variáveis aqui?</h4>
+    <ul>
+      <li>O valor <code>20px</code> é usado em 3 lugares: <code>padding</code> do body, <code>gap</code> e <code>padding</code> das caixas.</li>
+      <li>Com variável, basta mudar <code>--espaco</code> em um lugar e tudo atualiza.</li>
+      <li>Sem variável, precisaria alterar manualmente os 3 lugares — risco de inconsistência.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ===== EX-VAR3 (DARK MODE) ===== -->
+<section id="ex-var3">
+  <div class="section-header">
+    <span class="section-tag tag-dark">exemplo-var3</span>
+    <h2 class="section-title">Dark Mode Toggle — só com CSS</h2>
+  </div>
+
+  <div class="example">
+    <div class="example-title">📁 style.css + exemplo-cores.html — <span>Troca de tema com variáveis + checkbox hack</span></div>
+    <div class="example-body">
+      <div class="preview-wrap">
+        <!-- checkbox escondido -->
+        <input type="checkbox" id="demo-tema">
+        <label for="demo-tema" class="demo-switch-label">
+          <div class="demo-slider"></div>
+          <span>Clique para alternar tema</span>
+        </label>
+        <div class="demo-theme-wrap">
+          <div class="demo-conteudo">
+            <h3>Olá, mundo!</h3>
+            <p>Tema trocado só com CSS!</p>
+          </div>
+        </div>
+      </div>
+      <div class="code-cols">
+        <div class="code-label">CSS — style.css (completo)</div>
+        <pre>/* Variáveis padrão (tema claro) */
+:root {
+  --cor-fundo: white;
+  --cor-texto: black;
+}
+
+/* Esconde o checkbox visualmente mas mantém funcional */
+#tema {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* Quando marcado → redefine as variáveis no irmão .conteudo */
+#tema:checked ~ .conteudo {
+  --cor-fundo: black;
+  --cor-texto: white;
+}
+
+/* Usa as variáveis (mudam automaticamente com o :checked) */
+.conteudo {
+  background-color: var(--cor-fundo);
+  color: var(--cor-texto);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.5s, color 0.5s;
+}
+
+/* ── Estilo do switch (slider) ── */
+.slider {
+  width: 50px;
+  height: 24px;
+  background-color: #ccc;
+  border-radius: 24px;
+  position: relative;
+  transition: background 0.3s;
+}
+
+/* bolinha dentro do slider */
+.slider::before {
+  content: "";
+  position: absolute;
+  width: 20px; height: 20px;
+  left: 2px; top: 2px;
+  background-color: white;
+  border-radius: 50%;
+  transition: transform 0.3s;
+}
+
+/* quando marcado: muda a cor do slider... */
+#tema:checked + label .slider {
+  background-color: #666;
+}
+
+/* ... e move a bolinha */
+#tema:checked + label .slider::before {
+  transform: translateX(26px);
+}</pre>
+        <div class="code-label">HTML</div>
+        <pre>&lt;!-- checkbox que fica escondido --&gt;
+&lt;input type="checkbox" id="tema"&gt;
+
+&lt;!-- label clicável = o switch visual --&gt;
+&lt;label for="tema" class="switch"&gt;
+  &lt;div class="slider"&gt;&lt;/div&gt;
+&lt;/label&gt;
+
+&lt;!-- conteúdo que muda de tema --&gt;
+&lt;div class="conteudo"&gt;
+  &lt;h1&gt;Olá, mundo!&lt;/h1&gt;
+  &lt;p&gt;Tema trocado só com CSS!&lt;/p&gt;
+&lt;/div&gt;</pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="concept">
+    <h4>💡 Como funciona o truque?</h4>
+    <ul>
+      <li>O <code>&lt;input type="checkbox"&gt;</code> fica invisível (<code>opacity: 0</code>) mas ainda funciona.</li>
+      <li>O <code>&lt;label for="tema"&gt;</code> está vinculado ao checkbox → clicar no label marca/desmarca.</li>
+      <li>O seletor <code>#tema:checked ~ .conteudo</code> usa o <strong>seletor irmão ~</strong> para atingir o <code>.conteudo</code> quando o checkbox está marcado.</li>
+      <li>Dentro do <code>.conteudo</code>, as variáveis <code>--cor-fundo</code> e <code>--cor-texto</code> são redefinidas.</li>
+      <li>Como o <code>background-color</code> e <code>color</code> usam <code>var()</code>, eles atualizam automaticamente.</li>
+      <li>O <code>transition</code> no <code>.conteudo</code> garante a animação suave entre os temas.</li>
+    </ul>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <tr><th>Seletor</th><th>O que seleciona</th></tr>
+      <tr><td>#tema:checked ~ .conteudo</td><td>O .conteudo que é irmão do #tema quando marcado</td></tr>
+      <tr><td>#tema:checked + label .slider</td><td>O .slider dentro do label imediatamente após o #tema marcado</td></tr>
+      <tr><td>~ (til)</td><td>Seleciona todos os irmãos seguintes</td></tr>
+      <tr><td>+ (mais)</td><td>Seleciona apenas o irmão imediatamente seguinte</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- ===== ESCOPO ===== -->
+<section id="escopo">
+  <div class="section-header">
+    <span class="section-tag tag-scope">CSS</span>
+    <h2 class="section-title">Escopo das variáveis</h2>
+  </div>
+
+  <div class="concept">
+    <h4>🧠 Conceito</h4>
+    <ul>
+      <li>Variáveis CSS respeitam o escopo do DOM — a variável é herdada pelos filhos do elemento onde foi declarada.</li>
+      <li>Um elemento filho pode <strong>sobrescrever</strong> a variável do pai sem afetar outros elementos.</li>
+      <li><code>:root</code> = escopo global (disponível para todos).</li>
+      <li>Uma classe ou ID específico = escopo local (só afeta aquele elemento e seus filhos).</li>
+    </ul>
+  </div>
+
+  <div class="example">
+    <div class="example-title">🔬 Demo — escopo e herança de variáveis</div>
+    <div class="example-body">
+      <div class="preview-wrap">
+        <div class="scope-pai">
+          .pai → --cor: vermelho
+          <div class="scope-filho">
+            .filho → --cor: azul (sobrescreveu)
+            <div class="scope-neto">.neto → herda --cor: azul do pai</div>
+          </div>
+        </div>
+      </div>
+      <div class="code-cols">
+        <div class="code-label">CSS</div>
+        <pre>/* Global */
+:root {
+  --cor: gray; /* padrão global */
+}
+
+/* Redefine no .pai */
+.pai {
+  --cor: red;
+  color: var(--cor); /* vermelho */
+}
+
+/* Redefine no .filho (não afeta .pai) */
+.filho {
+  --cor: blue;
+  color: var(--cor); /* azul */
+}
+
+/* .neto herda --cor: blue do .filho */
+.neto {
+  color: var(--cor); /* azul (herdado) */
+}</pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FALLBACK ===== -->
+<section id="fallback">
+  <div class="section-header">
+    <span class="section-tag tag-var">CSS</span>
+    <h2 class="section-title">Fallback — valor padrão</h2>
+  </div>
+
+  <div class="concept">
+    <h4>🧠 Conceito</h4>
+    <ul>
+      <li><code>var(--nome, fallback)</code> — se a variável não existir ou for inválida, usa o <code>fallback</code>.</li>
+      <li>O fallback pode ser qualquer valor CSS, inclusive outra variável.</li>
+    </ul>
+  </div>
+
+  <div class="cheat">
+    <h4>📝 Exemplos de fallback</h4>
+    <pre>/* Variável não definida → usa "red" */
+color: var(--cor-inexistente, red);
+
+/* Variável não definida → usa outra variável */
+color: var(--cor-primaria, var(--cor-secundaria));
+
+/* Cadeia de fallbacks */
+color: var(--a, var(--b, var(--c, black)));
+
+/* Fallback com calc() */
+padding: var(--espaco, 16px);
+margin:  calc(var(--espaco, 16px) * 2);</pre>
+  </div>
+</section>
+
+<!-- ===== RESUMO ===== -->
+<section id="resumo">
+  <div class="section-header">
+    <span class="section-tag tag-dark">⭐</span>
+    <h2 class="section-title">Resumo — Cola Rápida</h2>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <tr><th>O quê</th><th>Sintaxe</th><th>Lembrete</th></tr>
+      <tr><td>Declarar variável</td><td>--nome: valor;</td><td>Sempre dois hífens no início</td></tr>
+      <tr><td>Escopo global</td><td>:root { --nome: valor; }</td><td>Disponível em todo o documento</td></tr>
+      <tr><td>Usar variável</td><td>propriedade: var(--nome);</td><td>Função var()</td></tr>
+      <tr><td>Com fallback</td><td>var(--nome, valorPadrão)</td><td>Usado se a variável não existir</td></tr>
+      <tr><td>Com calc()</td><td>calc(var(--espaco) * 2)</td><td>Operações matemáticas com variáveis</td></tr>
+      <tr><td>Sobrescrever</td><td>.classe { --nome: novo; }</td><td>Só afeta o elemento e seus filhos</td></tr>
+      <tr><td>Dark mode sem JS</td><td>#cb:checked ~ .div { --var: novoValor; }</td><td>Seletor ~ redefine variável no irmão</td></tr>
+    </table>
+  </div>
+
+  <div class="cheat">
+    <h4>📝 Padrão do dark mode toggle (checkbox hack)</h4>
+    <pre>/* HTML necessário (ordem importa!) */
+&lt;input type="checkbox" id="tema"&gt;      &lt;!-- 1. checkbox --&gt;
+&lt;label for="tema"&gt;Toggle&lt;/label&gt;       &lt;!-- 2. label (+ irmão) --&gt;
+&lt;div class="conteudo"&gt;...&lt;/div&gt;        &lt;!-- 3. conteúdo (~ irmão) --&gt;
+
+/* CSS */
+:root {
+  --fundo: white;
+  --texto: black;
+}
+
+#tema {                     /* esconde o checkbox */
+  position: absolute;
+  opacity: 0;
+  width: 0; height: 0;
+}
+
+#tema:checked ~ .conteudo { /* quando marcado → tema escuro */
+  --fundo: black;
+  --texto: white;
+}
+
+.conteudo {
+  background: var(--fundo);
+  color: var(--texto);
+  transition: background 0.5s, color 0.5s;
+}
+
+/* Seletores de irmão:
+   +  → irmão imediatamente seguinte
+   ~  → todos os irmãos seguintes       */</pre>
+  </div>
+
+  <div class="cheat">
+    <h4>📝 Diferença: variáveis CSS vs SASS/LESS</h4>
+    <pre>/* SASS — estático, compilado, não muda no runtime */
+$cor: red;
+.box { color: $cor; }
+
+/* CSS Custom Properties — dinâmico, muda em tempo real */
+:root { --cor: red; }
+.box  { color: var(--cor); }
+
+/* Com CSS é possível fazer: */
+document.documentElement.style.setProperty('--cor', 'blue');
+/* e TODOS os elementos que usam --cor atualizam instantaneamente */</pre>
+  </div>
+</section>
+
+</main>
+</body>
+</html>
