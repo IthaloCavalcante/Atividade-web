@@ -1,0 +1,1390 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>📚 WEB1 — Animação CSS · Material de Apoio</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0d0f14;
+      --surface: #151820;
+      --card: #1c2030;
+      --border: #2a2f42;
+      --accent: #7c6dfa;
+      --accent2: #fa6d8a;
+      --accent3: #6dfabc;
+      --text: #e4e8f7;
+      --muted: #8892b0;
+      --code-bg: #111420;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Syne', sans-serif;
+      line-height: 1.6;
+    }
+
+    /* HEADER */
+    header {
+      background: linear-gradient(135deg, #1a1030 0%, #0d1a2e 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 2.5rem 2rem 2rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 30% 50%, rgba(124,109,250,0.15) 0%, transparent 60%),
+                  radial-gradient(ellipse at 70% 30%, rgba(250,109,138,0.1) 0%, transparent 50%);
+      pointer-events: none;
+    }
+    header h1 {
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      background: linear-gradient(90deg, #7c6dfa, #fa6d8a, #6dfabc);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      position: relative;
+    }
+    header p {
+      color: var(--muted);
+      margin-top: .5rem;
+      font-size: .95rem;
+      position: relative;
+    }
+
+    /* NAV */
+    nav {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: .8rem 2rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: .5rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    nav a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: .8rem;
+      font-weight: 700;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      padding: .3rem .7rem;
+      border-radius: 4px;
+      border: 1px solid transparent;
+      transition: all .2s;
+    }
+    nav a:hover {
+      color: var(--accent);
+      border-color: var(--accent);
+      background: rgba(124,109,250,.08);
+    }
+
+    /* MAIN */
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 4rem;
+    }
+
+    /* SECTION */
+    section {
+      margin-bottom: 3.5rem;
+    }
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .section-tag {
+      font-size: .7rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      padding: .25rem .6rem;
+      border-radius: 4px;
+    }
+    .tag-transition  { background: rgba(109,250,188,.1); color: #6dfabc; }
+    .tag-transform   { background: rgba(124,109,250,.1); color: #a09cf7; }
+    .tag-animation   { background: rgba(250,109,138,.1); color: #fa6d8a; }
+    .tag-before      { background: rgba(250,200,80,.1);  color: #fac850; }
+    .tag-clip        { background: rgba(80,180,250,.1);  color: #50b4fa; }
+    .tag-target      { background: rgba(180,80,250,.1);  color: #b450fa; }
+
+    .section-title {
+      font-size: 1.5rem;
+      font-weight: 800;
+      letter-spacing: -.01em;
+    }
+
+    /* CARD EXAMPLE */
+    .example {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      margin-bottom: 1.5rem;
+      overflow: hidden;
+    }
+    .example-title {
+      padding: .7rem 1.2rem;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      font-size: .85rem;
+      font-weight: 700;
+      color: var(--muted);
+      letter-spacing: .04em;
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+    }
+    .example-title span { color: var(--text); }
+    .example-body {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+    }
+    @media(max-width:700px) { .example-body { grid-template-columns: 1fr; } }
+
+    /* PREVIEW */
+    .preview-wrap {
+      border-right: 1px solid var(--border);
+      padding: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 160px;
+      background: #0a0c12;
+    }
+    @media(max-width:700px) { .preview-wrap { border-right: none; border-bottom: 1px solid var(--border); } }
+
+    /* CODE COLUMNS */
+    .code-cols {
+      padding: 1rem 1.2rem;
+      overflow-x: auto;
+    }
+    .code-label {
+      font-size: .65rem;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: .3rem;
+    }
+    pre {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .72rem;
+      line-height: 1.6;
+      color: #ccd6f6;
+      background: var(--code-bg);
+      padding: .8rem 1rem;
+      border-radius: 8px;
+      overflow-x: auto;
+      margin-bottom: .8rem;
+      border: 1px solid var(--border);
+      white-space: pre;
+    }
+    /* Syntax-like coloring via CSS */
+    .k  { color: #c792ea; }   /* keyword / selector */
+    .p  { color: #89ddff; }   /* property */
+    .v  { color: #c3e88d; }   /* value */
+    .c  { color: #546e7a; font-style: italic; }   /* comment */
+    .n  { color: #ffcb6b; }   /* number/unit */
+    .s  { color: #fa6d8a; }   /* string */
+
+    /* CONCEPT BOX */
+    .concept {
+      background: rgba(124,109,250,.07);
+      border: 1px solid rgba(124,109,250,.2);
+      border-radius: 10px;
+      padding: 1.2rem 1.4rem;
+      margin-bottom: 1.5rem;
+      font-size: .88rem;
+    }
+    .concept h4 {
+      color: var(--accent);
+      font-size: .8rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      margin-bottom: .6rem;
+    }
+    .concept ul { padding-left: 1.2rem; }
+    .concept li { margin-bottom: .3rem; color: var(--text); }
+    .concept code {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .8em;
+      background: rgba(255,255,255,.06);
+      padding: .1em .4em;
+      border-radius: 3px;
+      color: #6dfabc;
+    }
+
+    /* TABLE */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: .82rem;
+      margin-bottom: 1rem;
+    }
+    th {
+      background: var(--surface);
+      color: var(--accent);
+      font-weight: 700;
+      font-size: .7rem;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      padding: .6rem 1rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    td {
+      padding: .55rem 1rem;
+      border-bottom: 1px solid rgba(42,47,66,.6);
+      vertical-align: top;
+    }
+    tr:last-child td { border-bottom: none; }
+    td:first-child { font-family: 'JetBrains Mono', monospace; font-size: .78rem; color: #6dfabc; }
+    .table-wrap {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      margin-bottom: 1.5rem;
+    }
+
+    /* ============ LIVE DEMOS ============ */
+
+    /* Transition demos */
+    .demo-botao {
+      background: royalblue;
+      color: white;
+      padding: 10px 22px;
+      border: none;
+      cursor: pointer;
+      font-family: 'Syne', sans-serif;
+      font-size: .95rem;
+      border-radius: 6px;
+      transition: background 0.3s ease;
+    }
+    .demo-botao:hover { background: darkblue; }
+
+    .demo-caixa {
+      width: 80px;
+      height: 80px;
+      background: tomato;
+      border-radius: 6px;
+      transition: width 0.5s ease, background 1s linear;
+      cursor: pointer;
+    }
+    .demo-caixa:hover { width: 160px; background: teal; }
+
+    .demo-card-t {
+      background: white;
+      padding: 18px;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,.15);
+      width: 200px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+      color: #333;
+      font-size: .8rem;
+    }
+    .demo-card-t:hover { transform: translateY(-10px); box-shadow: 0 10px 20px rgba(0,0,0,.25); }
+    .demo-card-t h2 { font-size: .9rem; margin-bottom: .3rem; }
+
+    /* Transform demos */
+    .demo-box {
+      background: #4a90e2;
+      color: white;
+      width: 80px;
+      height: 80px;
+      line-height: 80px;
+      border-radius: 8px;
+      text-align: center;
+      transition: transform 0.4s ease;
+      cursor: pointer;
+      font-size: .75rem;
+      font-family: 'JetBrains Mono', monospace;
+    }
+    .demo-box.translate:hover { transform: translate(25px, -15px); }
+    .demo-box.rotate:hover    { transform: rotate(45deg); }
+    .demo-box.scale:hover     { transform: scale(1.3); }
+    .demo-box.skew:hover      { transform: skew(20deg, 10deg); }
+    .demo-box.matrix:hover    { transform: matrix(1, 0.3, 0.2, 1, 15, -8); }
+    .demo-transforms { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+
+    /* Animation demos */
+    @keyframes mover {
+      0%   { left: 0; }
+      100% { left: calc(100% - 60px); }
+    }
+    .demo-quadrado {
+      width: 60px; height: 60px;
+      background: red;
+      border-radius: 4px;
+      position: relative;
+      animation: mover 2s ease-in-out infinite alternate;
+      flex-shrink: 0;
+    }
+    .demo-mover-wrap { width: 100%; overflow: hidden; }
+
+    @keyframes mudar {
+      0%   { background: blue;   border-radius: 0%;  transform: rotate(0deg);   }
+      50%  { background: purple; border-radius: 50%; transform: rotate(180deg); }
+      100% { background: green;  border-radius: 0%;  transform: rotate(360deg); }
+    }
+    .demo-bolha {
+      width: 70px; height: 70px;
+      background: blue;
+      animation: mudar 3s ease-in-out infinite alternate;
+    }
+
+    @keyframes girar {
+      from { transform: rotate(0deg); }
+      to   { transform: rotate(360deg); }
+    }
+    .demo-loading {
+      width: 50px; height: 50px;
+      border: 5px solid #333;
+      border-top: 5px solid dodgerblue;
+      border-radius: 50%;
+      animation: girar 1s linear infinite;
+    }
+
+    @keyframes balancar {
+      0%   { transform: rotate(0deg); }
+      25%  { transform: rotate(10deg); }
+      50%  { transform: rotate(-10deg); }
+      75%  { transform: rotate(5deg); }
+      100% { transform: rotate(0deg); }
+    }
+    .demo-caixa-b {
+      width: 70px; height: 70px;
+      background: coral;
+      border-radius: 6px;
+      animation: balancar 1s ease-in-out infinite;
+    }
+
+    /* ::before e ::after */
+    .demo-btn-before {
+      position: relative;
+      padding: 10px 20px;
+      font-size: .9rem;
+      background: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 4px;
+      overflow: hidden;
+      font-family: 'Syne', sans-serif;
+    }
+    .demo-btn-before::before {
+      content: "";
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 0; height: 3px;
+      background: #fff;
+      transition: width 0.3s ease;
+    }
+    .demo-btn-before:hover::before { width: 100%; }
+    .demo-btn-before:hover { background: #45a049; }
+
+    @keyframes moveLine {
+      0%   { left: -100%; }
+      50%  { left: 50%;   }
+      100% { left: 100%;  }
+    }
+    .demo-btn-after {
+      position: relative;
+      padding: 10px 20px;
+      font-size: .9rem;
+      background: #4CAF50;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 4px;
+      overflow: hidden;
+      font-family: 'Syne', sans-serif;
+    }
+    .demo-btn-after::after {
+      content: "";
+      position: absolute;
+      bottom: 0; left: -100%;
+      width: 100%; height: 3px;
+      background: #fff;
+      animation: moveLine 2s infinite;
+    }
+
+    /* clip-path */
+    .demo-box-clip {
+      width: 160px; height: 100px;
+      background: #4A90E2;
+      overflow: hidden;
+      position: relative;
+      cursor: pointer;
+      border-radius: 6px;
+    }
+    .demo-content-clip {
+      width: 100%; height: 100%;
+      color: white;
+      padding: 14px;
+      clip-path: circle(0% at 50% 50%);
+      transition: clip-path 0.6s ease;
+      font-size: .8rem;
+    }
+    .demo-box-clip:hover .demo-content-clip {
+      clip-path: circle(150% at 50% 50%);
+    }
+
+    .demo-card-poly {
+      width: 160px; height: 100px;
+      background: linear-gradient(135deg, #00c6ff, #0072ff);
+      color: white;
+      display: flex; align-items: center; justify-content: center;
+      font-size: .8rem;
+      cursor: pointer;
+      transition: clip-path 0.6s ease;
+      clip-path: polygon(0% 0%, 80% 0%, 100% 100%, 20% 100%);
+    }
+    .demo-card-poly:hover {
+      clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%);
+    }
+
+    /* :target */
+    .demo-target-btn {
+      display: inline-block;
+      padding: .5rem 1rem;
+      background: #333;
+      color: white;
+      border-radius: .5rem;
+      text-decoration: none;
+      font-size: .85rem;
+    }
+    .demo-target-card {
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+      background: #f0f0f0;
+      padding: 1rem;
+      border-radius: .7rem;
+      width: 200px;
+      text-align: center;
+      color: #333;
+      font-size: .82rem;
+      margin-top: .8rem;
+    }
+    .demo-target-card:target {
+      opacity: 1;
+      pointer-events: auto;
+      box-shadow: 0 0 20px rgba(0,0,0,.2);
+    }
+    .demo-target-card a {
+      display: inline-block;
+      padding: .3rem .7rem;
+      background: #555;
+      color: white;
+      border-radius: .4rem;
+      text-decoration: none;
+      font-size: .75rem;
+      margin-top: .5rem;
+    }
+
+    /* ============ CURSOR TABLE DEMO ============ */
+    .cursor-grid {
+      display: flex; flex-wrap: wrap; gap: .5rem; padding: .5rem;
+    }
+    .cursor-chip {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .7rem;
+      padding: .35rem .7rem;
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      color: #6dfabc;
+    }
+
+    /* FULL-WIDTH code examples */
+    .example-full pre { margin: 0; border-radius: 0 0 10px 10px; border: none; border-top: 1px solid var(--border); }
+
+    /* SUMMARY CHEAT SHEET */
+    .cheat {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .cheat h4 {
+      font-size: .8rem;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: var(--accent2);
+      margin-bottom: 1rem;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>📚 WEB1 — Animação CSS</h1>
+  <p>Material de apoio completo · transition · transform · animation · ::before/after · clip-path · :target</p>
+</header>
+
+<nav>
+  <a href="#transition">Transition</a>
+  <a href="#transform">Transform</a>
+  <a href="#animation">Animation & Keyframes</a>
+  <a href="#before-after">::before / ::after</a>
+  <a href="#clip-path">Clip-path</a>
+  <a href="#target">:target</a>
+  <a href="#cursor">Cursor</a>
+  <a href="#resumo">Resumo Geral</a>
+</nav>
+
+<main>
+
+<!-- =============================================
+     1. TRANSITION
+============================================= -->
+<section id="transition">
+  <div class="section-header">
+    <span class="section-tag tag-transition">CSS</span>
+    <h2 class="section-title">transition</h2>
+  </div>
+
+  <div class="concept">
+    <h4>🧠 Conceito</h4>
+    <ul>
+      <li><code>transition</code> anima a mudança entre dois estados (ex: hover).</li>
+      <li>Sintaxe: <code>transition: propriedade duração timing-function delay;</code></li>
+      <li>Pode animar múltiplas props separadas por vírgula.</li>
+      <li>Só funciona entre estados definidos (ex: <code>:hover</code>, <code>:focus</code>).</li>
+    </ul>
+  </div>
+
+  <!-- Ex1: botão -->
+  <div class="example">
+    <div class="example-title">📁 style1.css + index1.html — <span>Botão com transition de cor</span></div>
+    <div class="example-body">
+      <div class="preview-wrap">
+        <button class="demo-botao">Passe o mouse</button>
+      </div>
+      <div class="code-cols">
+        <div class="code-label">CSS</div>
+        <pre>.botao {
+  background: royalblue;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s ease;
+  /* propriedade duração timing */
+}
+
+.botao:hover {
+  background: darkblue;
+}</pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ex2: caixa largura+cor -->
+  <div class="example">
+    <div class="example-title">📁 style2.css — <span>Caixa: largura + cor ao mesmo tempo</span></div>
+    <div class="example-body">
+      <div class="preview-wrap">
+        <div class="demo-caixa"></div>
+      </div>
+      <div class="code-cols">
+        <div class="code-label">CSS</div>
+        <pre>.caixa {
+  width: 100px;
+  height: 100px;
+  background: tomato;
+
+  /* anima duas propriedades ao mesmo tempo */
+  transition: width 0.5s ease,
+              background 1s linear;
+}
+
+.caixa:hover {
+  width: 200px;
+  background: teal;
+}</pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ex4: card com transform -->
+  <div class="example">
+    <div class="example-title">📁 style4.css — <span>Card: transform + box-shadow</span></div>
+    <div class="example-body">
+      <div class="preview-wrap">
+        <div class="demo-card-t">
+          <h2>Título do Card</h2>
+          <p>Card animado com CSS transition.</p>
+        </div>
+      </div>
+      <div class="code-cols">
+        <div class="code-label">CSS</div>
+        <pre>.card {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  width: 300px;
+  transition: transform 0.3s ease,
+              box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}</pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- Timing functions table -->
+  <div class="table-wrap">
+    <table>
+      <tr><th>Timing Function</th><th>Comportamento</th></tr>
+      <tr><td>ease</td><td>Começa devagar, acelera no meio, termina devagar (padrão)</td></tr>
+      <tr><td>linear</td><td>Velocidade constante do início ao fim</td></tr>
+      <tr><td>ease-in</td><td>Começa devagar, termina rápido</td></tr>
+      <tr><td>ease-out</td><td>Começa rápido, termina devagar</td></tr>
+      <tr><td>ease-in-out</td><td>Devagar → rápido → devagar</td></tr>
+      <tr><td>cubic-bezier(x,y,x2,y2)</td><td>Curva personalizada</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- =============================================
+     2. TRANSFORM
+============================================= -->
+<section id="transform">
+  <div class="section-header">
+    <span class="section-tag tag-transform">CSS</span>
+    <h2 class="section-title">transform</h2>
+  </div>
+
+  <div class="concept">
+    <h4>🧠 Conceito</h4>
+    <ul>
+      <li><code>transform</code> move/rotaciona/escala/distorce o elemento visualmente.</li>
+      <li>Não afeta o fluxo do documento (não empurra outros elementos).</li>
+      <li>Combina com <code>transition</code> para criar animações suaves.</li>
+    </ul>
+  </div>
+
+  <div class="example">
+    <div class="example-title">📁 style5.css — <span>Todos os transforms (hover em cada caixa)</span></div>
+    <div class="preview-wrap" style="min-height:140px;">
+      <div class="demo-transforms">
+        <div class="demo-box translate">translate</div>
+        <div class="demo-box rotate">rotate</div>
+        <div class="demo-box scale">scale</div>
+        <div class="demo-box skew">skew</div>
+        <div class="demo-box matrix">matrix</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <tr><th>Função</th><th>O que faz</th><th>Exemplo</th></tr>
+      <tr><td>translate(x, y)</td><td>Move o elemento</td><td>translate(30px, -20px)</td></tr>
+      <tr><td>rotate(deg)</td><td>Gira o elemento</td><td>rotate(45deg)</td></tr>
+      <tr><td>scale(n)</td><td>Aumenta/diminui proporcionalmente</td><td>scale(1.3)</td></tr>
+      <tr><td>scaleX(n) / scaleY(n)</td><td>Escala em apenas um eixo</td><td>scaleX(2)</td></tr>
+      <tr><td>skew(x, y)</td><td>Inclina o elemento</td><td>skew(20deg, 10deg)</td></tr>
+      <tr><td>matrix(a,b,c,d,e,f)</td><td>Transformação completa via matriz</td><td>matrix(1, 0.3, 0.2, 1, 20, -10)</td></tr>
+      <tr><td>translateY(-10px)</td><td>Mover só no eixo Y (usado em cards)</td><td>translateY(-10px)</td></tr>
+    </table>
+  </div>
+
+  <div class="cheat">
+    <h4>💡 CSS do ex. transform (style5.css)</h4>
+    <pre style="background:transparent;border:none;padding:0;font-size:.72rem;">.box {
+  background-color: #4a90e2;
+  color: white;
+  width: 100px; height: 100px;
+  line-height: 100px;
+  border-radius: 10px;
+  transition: transform 0.5s ease;
+  cursor: pointer;
+}
+
+.box.translate:hover { transform: translate(30px, -20px); }
+.box.rotate:hover    { transform: rotate(45deg); }
+.box.scale:hover     { transform: scale(1.3); }
+.box.skew:hover      { transform: skew(20deg, 10deg); }
+.box.matrix:hover    { transform: matrix(1, 0.3, 0.2, 1, 20, -10); }</pre>
+  </div>
+</section>
+
+<!-- =============================================
+     3. ANIMATION & @KEYFRAMES
+============================================= -->
+<section id="animation">
+  <div class="section-header">
+    <span class="section-tag tag-animation">CSS</span>
+    <h2 class="section-title">animation + @keyframes</h2>
+  </div>
+
+  <div class="concept">
+    <h4>🧠 Conceito</h4>
+    <ul>
+      <li><code>@keyframes nome { ... }</code> define os estados da animação (0%, 50%, 100% ou from/to).</li>
+      <li><code>animation</code> aplica o keyframe ao elemento.</li>
+      <li>Diferente de <code>transition</code>: roda automaticamente, sem precisar de estado como hover.</li>
+      <li>Sintaxe abreviada: <code>animation: nome duração timing repetições direção;</code></li>
+    </ul>
+  </div>
+
+  <!-- Propriedades -->
+  <div class="table-wrap">
+    <table>
+      <tr><th>Propriedade</th><th>Valores comuns</th><th>Descrição</th></tr>
+      <tr><td>animation-name</td><td>nome do @keyframes</td><td>Qual animação usar</td></tr>
+      <tr><td>animation-duration</td><td>1s, 500ms</td><td>Quanto tempo dura</td></tr>
+      <tr><td>animation-timing-function</td><td>ease, linear, ease-in-out</td><td>Curva de velocidade</td></tr>
+      <tr><td>animation-delay</td><td>0s, 1s</td><td>Atraso antes de começar</td></tr>
+      <tr><td>animation-iteration-count</td><td>1, infinite, 3</td><td>Quantas vezes repete</td></tr>
+      <tr><td>animation-direction</td><td>normal, reverse, alternate, alternate-reverse</td><td>Direção da animação</td></tr>
+      <tr><td>animation-fill-mode</td><td>none, forwards, backwards, both</td><td>Estado antes/depois da animação</td></tr>
+      <tr><td>animation-play-state</td><td>running, paused</td><td>Pausar ou rodar</td></tr>
+    </table>
+  </div>
+
+  <!-- Ex6: mover -->
+  <div class="example">
+    <div class="example-title">📁 style6.css — <span>Mover quadrado (position: relative + left)</span></div>
+    <div class="example-body">
+      <div class="preview-wrap" style="align-items:flex-start; padding:1rem .5rem;">
+        <div class="demo-mover-wrap">
+          <div class="demo-quadrado"></div>
+        </div>
+      </div>
+      <div class="code-cols">
+        <div class="code-label">CSS</div>
+        <pre>.quadrado {
+  width: 100px; height: 100px;
+  background: red;
+  position: relative;
+
+  /* abreviado: nome duração timing repetição */
+  animation: mover 2s ease-in-out infinite;
+}
+
+@keyframes mover {
+  0%   { left: 0; }
+  100% { left: calc(100vw - 100px); }
+}</pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ex7: mudar cor/forma -->
+  <div class="example">
+    <div class="example-title">📁 style7.css — <span>Mudar cor + forma + rotate (alternate)</span></div>
+    <div class="example-body">
+      <div class="preview-wrap">
+        <div class="demo-bolha"></div>
+      </div>
+      <div class="code-cols">
+        <div class="code-label">CSS</div>
+        <pre>.bolha {
+  width: 100px; height: 100px;
+  background: blue;
+  /* alternate: vai de 0→100 depois 100→0 (ping pong) */
+  animation: mudar 3s ease-in-out infinite alternate;
+}
+
+@keyframes mudar {
+  0%   { background: blue;   border-radius: 0%;  transform: rotate(0deg);   }
+  50%  { background: purple; border-radius: 50%; transform: rotate(180deg); }
+  100% { background: green;  border-radius: 0%;  transform: rotate(360deg); }
+}</pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ex8: loading -->
+  <div class="example">
+    <div class="example-title">📁 style8.css — <span>Loading spinner (from/to)</span></div>
+    <div class="example-body">
+      <div class="preview-wrap">
+        <div class="demo-loading"></div>
+      </div>
+      <div class="code-cols">
+        <div class="code-label">CSS</div>
+        <pre>.loading {
+  width: 50px; height: 50px;
+  border: 5px solid #ccc;
+  border-top: 5px solid dodgerblue;
+  border-radius: 50%;
+  animation: girar 1s linear infinite;
+}
+
+/* from/to = atalho para 0% e 100% */
+@keyframes girar {
+  from { transform: rotate(0deg);   }
+  to   { transform: rotate(360deg); }
+}</pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ex9: balancar - propriedades separadas -->
+  <div class="example">
+    <div class="example-title">📁 style9.css — <span>Balançar (propriedades separadas)</span></div>
+    <div class="example-body">
+      <div class="preview-wrap">
+        <div class="demo-caixa-b"></div>
+      </div>
+      <div class="code-cols">
+        <div class="code-label">CSS</div>
+        <pre>.caixa {
+  width: 100px; height: 100px;
+  background-color: coral;
+  margin: 100px auto;
+
+  /* Propriedades separadas (ao invés da abreviada): */
+  animation-name: balancar;
+  animation-duration: 1s;
+  animation-timing-function: ease-in-out;
+  animation-delay: 0s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  animation-fill-mode: both;
+  animation-play-state: running;
+
+  /* equivale a: animation: balancar 1s ease-in-out 0s infinite alternate both running; */
+}
+
+@keyframes balancar {
+  0%   { transform: rotate(0deg);   }
+  25%  { transform: rotate(10deg);  }
+  50%  { transform: rotate(-10deg); }
+  75%  { transform: rotate(5deg);   }
+  100% { transform: rotate(0deg);   }
+}</pre>
+      </div>
+    </div>
+  </div>
+
+  <div class="concept">
+    <h4>💡 alternate vs normal</h4>
+    <ul>
+      <li><code>normal</code>: reinicia do zero a cada ciclo (efeito abrupto)</li>
+      <li><code>alternate</code>: vai de 0%→100% e volta 100%→0% suavemente (efeito ping-pong)</li>
+      <li><code>reverse</code>: começa no 100% e vai para 0%</li>
+    </ul>
+  </div>
+</section>
+
+<!-- =============================================
+     4. ::before e ::after
+============================================= -->
+<section id="before-after">
+  <div class="section-header">
+    <span class="section-tag tag-before">CSS</span>
+    <h2 class="section-title">::before e ::after</h2>
+  </div>
+
+  <div class="concept">
+    <h4>🧠 Conceito</h4>
+    <ul>
+      <li><code>::before</code> e <code>::after</code> inserem conteúdo virtual antes/depois do elemento.</li>
+      <li>Exigem <code>content: "";</code> (mesmo vazio) para existir.</li>
+      <li>São tratados como elementos filhos → aceitam <code>position: absolute</code>.</li>
+      <li>O pai precisa de <code>position: relative</code> para o pseudo-elemento se posicionar corretamente.</li>
+      <li>Podem ser combinados com <code>transition</code> e <code>animation</code>.</li>
+    </ul>
+  </div>
+
+  <!-- Ex10: hover expande linha embaixo -->
+  <div class="example">
+    <div class="example-title">📁 style10.css — <span>::before + transition (linha aparece no hover)</span></div>
+    <div class="example-body">
+      <div class="preview-wrap">
+        <button class="demo-btn-before">Clique aqui</button>
+      </div>
+      <div class="code-cols">
+        <div class="code-label">CSS</div>
+        <pre>.animated-button {
+  position: relative;     /* âncora o ::before */
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: white;
+  border: none; cursor: pointer;
+  overflow: hidden;       /* esconde o ::before que sai do botão */
+}
+
+.animated-button::before {
+  content: "";            /* obrigatório! */
+  position: absolute;
+  bottom: 0; left: 0;
+  width: 0;               /* começa com largura zero */
+  height: 3px;
+  background-color: #fff;
+  transition: width 0.3s ease;
+}
+
+.animated-button:hover::before {
+  width: 100%;            /* expande ao fazer hover */
+}
+
+.animated-button:hover {
+  background-color: #45a049;
+}</pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ex11: ::after com @keyframes -->
+  <div class="example">
+    <div class="example-title">📁 style11.css — <span>::after + @keyframes (linha deslizando)</span></div>
+    <div class="example-body">
+      <div class="preview-wrap">
+        <button class="demo-btn-after">Clique aqui</button>
+      </div>
+      <div class="code-cols">
+        <div class="code-label">CSS</div>
+        <pre>.moving-line-button {
+  position: relative;
+  padding: 10px 20px;
+  background-color: #4CAF50;
+  color: white;
+  border: none; cursor: pointer;
+}
+
+.moving-line-button::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: -100%;    /* começa fora do botão, à esquerda */
+  width: 100%;
+  height: 3px;
+  background-color: #fff;
+  animation: moveLine 2s infinite;
+}
+
+@keyframes moveLine {
+  0%   { left: -100%; }  /* fora à esquerda */
+  50%  { left: 50%;   }  /* meio do botão   */
+  100% { left: 100%;  }  /* sai à direita   */
+}</pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+     5. CLIP-PATH
+============================================= -->
+<section id="clip-path">
+  <div class="section-header">
+    <span class="section-tag tag-clip">CSS</span>
+    <h2 class="section-title">clip-path</h2>
+  </div>
+
+  <div class="concept">
+    <h4>🧠 Conceito</h4>
+    <ul>
+      <li><code>clip-path</code> recorta o elemento em uma forma geométrica — o que estiver fora da forma fica invisível.</li>
+      <li>Pode ser animado com <code>transition</code> e <code>@keyframes</code>.</li>
+      <li>Formatos: <code>circle()</code>, <code>inset()</code>, <code>polygon()</code>, <code>ellipse()</code>.</li>
+    </ul>
+  </div>
+
+  <!-- Formatos -->
+  <div class="table-wrap">
+    <table>
+      <tr><th>Formato</th><th>Sintaxe</th><th>Descrição</th></tr>
+      <tr><td>circle()</td><td>circle(50% at 50% 50%)</td><td>Círculo: raio at posição-X posição-Y</td></tr>
+      <tr><td>inset()</td><td>inset(top right bottom left)</td><td>Recorte retangular interno</td></tr>
+      <tr><td>polygon()</td><td>polygon(x1 y1, x2 y2, ...)</td><td>Forma livre com vértices</td></tr>
+      <tr><td>ellipse()</td><td>ellipse(rx ry at cx cy)</td><td>Elipse</td></tr>
+    </table>
+  </div>
+
+  <!-- Ex12: circle reveal -->
+  <div class="example">
+    <div class="example-title">📁 style12.css — <span>circle() — reveal no hover</span></div>
+    <div class="example-body">
+      <div class="preview-wrap">
+        <div class="demo-box-clip">
+          <div class="demo-content-clip">
+            <strong>Surpresa!</strong><br>Hello World
+          </div>
+        </div>
+        <small style="color:var(--muted);font-size:.7rem;margin-top:.5rem;">← passe o mouse</small>
+      </div>
+      <div class="code-cols">
+        <div class="code-label">CSS</div>
+        <pre>.box {
+  width: 300px; height: 200px;
+  overflow: hidden;
+  position: relative;
+  cursor: pointer;
+}
+
+.content {
+  width: 100%; height: 100%;
+  /* começa com raio 0 = invisível */
+  clip-path: circle(0% at 50% 50%);
+  transition: clip-path 0.6s ease;
+}
+
+.box:hover .content {
+  /* cresce e revela tudo */
+  clip-path: circle(150% at 50% 50%);
+}</pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ex13: inset sidebar -->
+  <div class="example">
+    <div class="example-title">📁 style13.css — <span>inset() — sidebar deslizando</span></div>
+    <div class="example-body">
+      <div class="preview-wrap" style="flex-direction:column;gap:.5rem;">
+        <p style="font-size:.75rem;color:var(--muted);">Exemplo conceitual (sidebar fixa não funciona em preview embutido)</p>
+      </div>
+      <div class="code-cols">
+        <div class="code-label">CSS</div>
+        <pre>.sidebar {
+  background: #333;
+  color: white;
+  height: 100%;
+  width: 100%;
+  padding: 20px;
+  /* totalmente escondido à direita */
+  clip-path: inset(0 100% 0 0);
+  /* inset(top right bottom left) */
+  transition: clip-path 0.5s ease;
+}
+
+.menu:hover .sidebar {
+  clip-path: inset(0 0 0 0); /* mostra tudo */
+}
+
+/* inset(0 100% 0 0) = recorta 100% da direita = invisível
+   inset(0 0 0 0)    = sem recorte = visível       */</pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ex14: polygon -->
+  <div class="example">
+    <div class="example-title">📁 style14.css — <span>polygon() — trapézio → losango no hover</span></div>
+    <div class="example-body">
+      <div class="preview-wrap">
+        <div class="demo-card-poly">Side bar</div>
+        <small style="color:var(--muted);font-size:.7rem;margin-top:.5rem;">← hover</small>
+      </div>
+      <div class="code-cols">
+        <div class="code-label">CSS</div>
+        <pre>.card {
+  width: 300px; height: 200px;
+  background: linear-gradient(135deg, #00c6ff, #0072ff);
+  transition: clip-path 0.6s ease;
+
+  /* trapézio inclinado */
+  clip-path: polygon(
+    0%   0%,    /* topo esquerdo        */
+    80%  0%,    /* topo direito puxado  */
+    100% 100%,  /* canto inf. direito   */
+    20%  100%   /* canto inf. esquerdo  */
+  );
+}
+
+.card:hover {
+  /* losango */
+  clip-path: polygon(
+    50%  0%,    /* topo central    */
+    100% 50%,   /* direita central */
+    50%  100%,  /* base central    */
+    0%   50%    /* esquerda central */
+  );
+}</pre>
+      </div>
+    </div>
+  </div>
+
+  <!-- Ex15: menu checkbox hack -->
+  <div class="example">
+    <div class="example-title">📁 style15.css — <span>Menu hamburguer sem JS (checkbox hack)</span></div>
+    <div class="example-body" style="grid-template-columns:1fr;">
+      <div class="code-cols">
+        <div class="code-label">HTML</div>
+        <pre>&lt;input type="checkbox" id="menu-toggle" hidden&gt;
+&lt;label for="menu-toggle" class="hamburguer"&gt;☰&lt;/label&gt;
+&lt;nav class="menu"&gt;
+  &lt;a href="#"&gt;Início&lt;/a&gt;
+  &lt;a href="#"&gt;Sobre&lt;/a&gt;
+  &lt;a href="#"&gt;Contato&lt;/a&gt;
+&lt;/nav&gt;</pre>
+        <div class="code-label" style="margin-top:.5rem;">CSS</div>
+        <pre>.hamburguer {
+  font-size: 2rem;
+  cursor: pointer;
+  position: fixed;
+  top: 1rem; left: 1rem;
+  z-index: 2;
+}
+
+.menu {
+  position: fixed;
+  top: 0;
+  left: -200px;    /* começa fora da tela */
+  width: 200px; height: 100%;
+  background: #333; color: white;
+  transition: left 0.3s ease;
+}
+
+/* seletor irmão: quando o checkbox está marcado → move o menu */
+#menu-toggle:checked ~ .menu {
+  left: 0;
+}</pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+     6. :TARGET
+============================================= -->
+<section id="target">
+  <div class="section-header">
+    <span class="section-tag tag-target">CSS</span>
+    <h2 class="section-title">:target</h2>
+  </div>
+
+  <div class="concept">
+    <h4>🧠 Conceito</h4>
+    <ul>
+      <li><code>:target</code> ativa quando o ID do elemento corresponde ao fragmento (<code>#id</code>) da URL.</li>
+      <li>Ex: clicar em <code>&lt;a href="#card"&gt;</code> → URL vai para <code>#card</code> → <code>.card:target { ... }</code> ativa.</li>
+      <li>Para "fechar", usar <code>&lt;a href="#"&gt;</code> que remove o fragmento.</li>
+      <li>Permite mostrar/esconder elementos sem JavaScript.</li>
+    </ul>
+  </div>
+
+  <div class="example">
+    <div class="example-title">📁 style16.css + index16.html — <span>Card que aparece com :target</span></div>
+    <div class="example-body">
+      <div class="preview-wrap" style="flex-direction:column;">
+        <a href="#demo-card-target" class="demo-target-btn">Ver mais</a>
+        <div id="demo-card-target" class="demo-target-card">
+          <strong>Informações</strong>
+          <p>Apareceu com :target!</p>
+          <a href="#">Fechar</a>
+        </div>
+      </div>
+      <div class="code-cols">
+        <div class="code-label">HTML</div>
+        <pre>&lt;a href="#card" class="botao"&gt;Ver mais&lt;/a&gt;
+
+&lt;div id="card" class="card"&gt;
+  &lt;h2&gt;Informações&lt;/h2&gt;
+  &lt;p&gt;Aparece com :target!&lt;/p&gt;
+  &lt;!-- href="#" remove o fragmento → some --&gt;
+  &lt;a href="#" class="fechar"&gt;Fechar&lt;/a&gt;
+&lt;/div&gt;</pre>
+        <div class="code-label" style="margin-top:.5rem;">CSS</div>
+        <pre>.card {
+  opacity: 0;
+  pointer-events: none;  /* sem interação quando invisível */
+  transition: opacity 0.3s ease;
+}
+
+/* ativa quando #card está na URL */
+.card:target {
+  opacity: 1;
+  pointer-events: auto;
+  box-shadow: 0 0 20px rgba(0,0,0,0.2);
+}
+
+.botao, .fechar {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background: #333;
+  color: white;
+  border-radius: 0.5rem;
+  text-decoration: none;
+}</pre>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =============================================
+     7. CURSOR
+============================================= -->
+<section id="cursor">
+  <div class="section-header">
+    <span class="section-tag tag-transition">CSS</span>
+    <h2 class="section-title">cursor (style3.css)</h2>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <tr><th>Valor</th><th>Descrição</th></tr>
+      <tr><td>default</td><td>Seta padrão</td></tr>
+      <tr><td>pointer</td><td>Mãozinha (links, botões)</td></tr>
+      <tr><td>move</td><td>Cruz de movimento</td></tr>
+      <tr><td>wait</td><td>Ampulheta (carregando)</td></tr>
+      <tr><td>help</td><td>Ponto de interrogação</td></tr>
+      <tr><td>text</td><td>Cursor de texto (I-beam)</td></tr>
+      <tr><td>not-allowed</td><td>Círculo com linha (proibido)</td></tr>
+      <tr><td>crosshair</td><td>Cruz de precisão</td></tr>
+      <tr><td>progress</td><td>Carregando mas pode interagir</td></tr>
+      <tr><td>e-resize / w-resize</td><td>Redimensionar horizontalmente</td></tr>
+      <tr><td>n-resize / s-resize</td><td>Redimensionar verticalmente</td></tr>
+      <tr><td>ne-resize / nw-resize / se-resize / sw-resize</td><td>Redimensionar diagonal</td></tr>
+      <tr><td>alias</td><td>Criar atalho</td></tr>
+      <tr><td>copy</td><td>Copiar (drag & drop)</td></tr>
+      <tr><td>grab / grabbing</td><td>Arrastar</td></tr>
+      <tr><td>zoom-in / zoom-out</td><td>Aproximar/afastar</td></tr>
+    </table>
+  </div>
+
+  <div class="cheat">
+    <h4>💡 Código (style3.css)</h4>
+    <pre style="background:transparent;border:none;padding:0;font-size:.72rem;">.pointer-btn { cursor: pointer; }   /* mãozinha */
+.move-btn    { cursor: move; }      /* cruz */
+.resize-box  { cursor: se-resize; } /* diagonal inf-dir */
+.text-area   { cursor: text; }      /* I-beam */</pre>
+  </div>
+</section>
+
+<!-- =============================================
+     8. RESUMO GERAL
+============================================= -->
+<section id="resumo">
+  <div class="section-header">
+    <span class="section-tag tag-animation">⭐</span>
+    <h2 class="section-title">Resumo Geral — Cola Rápida</h2>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <tr><th>Propriedade/Seletor</th><th>Quando usar</th><th>Precisa de</th></tr>
+      <tr><td>transition</td><td>Animar mudança entre dois estados (:hover, :focus, etc.)</td><td>Dois estados com valores diferentes</td></tr>
+      <tr><td>transform</td><td>Mover, girar, escalar, distorcer visualmente</td><td>—</td></tr>
+      <tr><td>animation + @keyframes</td><td>Animação automática (sem precisar de hover)</td><td>@keyframes com nome correspondente</td></tr>
+      <tr><td>::before / ::after</td><td>Inserir elemento decorativo sem HTML extra</td><td>content: "" ; position: relative no pai</td></tr>
+      <tr><td>clip-path</td><td>Cortar elemento em forma geométrica</td><td>circle(), inset(), polygon()</td></tr>
+      <tr><td>:target</td><td>Ativar estilo pelo fragmento da URL (#id)</td><td>ID no elemento + href="#id" no link</td></tr>
+    </table>
+  </div>
+
+  <div class="cheat">
+    <h4>📝 Sintaxe abreviada — animation</h4>
+    <pre style="background:transparent;border:none;padding:0;font-size:.75rem;">animation: nome  duração  timing    delay  repetições  direção   fill-mode  play-state;
+animation: girar   1s      linear    0s      infinite   alternate    both      running;
+
+/* Mínimo necessário: */
+animation: nome duração;
+animation: girar 1s;</pre>
+  </div>
+
+  <div class="cheat">
+    <h4>📝 @keyframes — estrutura</h4>
+    <pre style="background:transparent;border:none;padding:0;font-size:.75rem;">@keyframes nomeDaAnimacao {
+  0%   { /* estado inicial */ }
+  50%  { /* meio */           }
+  100% { /* estado final */   }
+}
+
+/* Ou com from/to (= 0% e 100%): */
+@keyframes girar {
+  from { transform: rotate(0deg);   }
+  to   { transform: rotate(360deg); }
+}</pre>
+  </div>
+
+  <div class="cheat">
+    <h4>📝 clip-path — referência rápida</h4>
+    <pre style="background:transparent;border:none;padding:0;font-size:.75rem;">clip-path: circle(raio at X Y);
+  circle(0% at 50% 50%)    /* invisível */
+  circle(150% at 50% 50%)  /* tudo visível */
+
+clip-path: inset(top right bottom left);
+  inset(0 100% 0 0)  /* 100% recortado da direita = escondido */
+  inset(0 0 0 0)     /* sem recorte = visível */
+
+clip-path: polygon(x1 y1, x2 y2, x3 y3, ...);
+  polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)  /* losango */</pre>
+  </div>
+
+  <div class="cheat">
+    <h4>📝 ::before / ::after — estrutura obrigatória</h4>
+    <pre style="background:transparent;border:none;padding:0;font-size:.75rem;">.pai {
+  position: relative;  /* obrigatório se o pseudo-elemento usa position: absolute */
+  overflow: hidden;    /* opcional: esconde o pseudo-elemento que sai dos limites */
+}
+
+.pai::before {
+  content: "";         /* OBRIGATÓRIO — sem isso o elemento não existe */
+  position: absolute;
+  /* ... demais estilos ... */
+}
+
+/* Combinar com hover: */
+.pai:hover::before { width: 100%; }
+
+/* Combinar com @keyframes: */
+.pai::after { animation: moveLine 2s infinite; }</pre>
+  </div>
+
+  <div class="cheat">
+    <h4>📝 :target — fluxo</h4>
+    <pre style="background:transparent;border:none;padding:0;font-size:.75rem;">/* 1. Link que muda a URL: */
+&lt;a href="#meuCard"&gt;Abrir&lt;/a&gt;
+
+/* 2. Elemento com ID: */
+&lt;div id="meuCard"&gt;...&lt;/div&gt;
+
+/* 3. CSS que ativa quando #meuCard está na URL: */
+#meuCard:target { opacity: 1; }
+
+/* 4. Para fechar: */
+&lt;a href="#"&gt;Fechar&lt;/a&gt;  &lt;!-- remove o fragmento --&gt;</pre>
+  </div>
+
+  <div class="cheat">
+    <h4>📝 Checkbox hack (menu sem JS)</h4>
+    <pre style="background:transparent;border:none;padding:0;font-size:.75rem;">&lt;input type="checkbox" id="toggle" hidden&gt;
+&lt;label for="toggle"&gt;☰&lt;/label&gt;
+&lt;nav class="menu"&gt;...&lt;/nav&gt;
+
+/* ~ = seletor de irmão */
+#toggle:checked ~ .menu {
+  left: 0;  /* aparece */
+}</pre>
+  </div>
+
+</section>
+
+</main>
+
+</body>
+</html>
