@@ -1,0 +1,241 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+:root {
+  --verde-escuro:   #0f6e56;
+  --verde-medio:    #1d9e75;
+  --verde-claro:    #e1f5ee;
+  --verde-borda:    #9fe1cb;
+  --bg:             #f2f7f5;
+  --surface:        #ffffff;
+  --border:         #d4e8e0;
+  --text-primary:   #0d1f1a;
+  --text-muted:     #5a7a6e;
+  --font-display:   'Bebas Neue', sans-serif;
+  --font-body:      'DM Sans', sans-serif;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
+}
+
+header {
+  background: var(--surface);
+  border-bottom: 1.5px solid var(--border);
+}
+
+.eyebrow {
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--verde-medio);
+  margin-bottom: 0.4rem;
+}
+
+h1 {
+  font-family: var(--font-display);
+  font-size: clamp(3.5rem, 9vw, 6rem);
+  line-height: 1;
+  letter-spacing: 0.04em;
+  color: var(--verde-escuro);
+}
+
+.subtitulo {
+  font-size: 15px;
+  color: var(--text-muted);
+  margin-top: 0.35rem;
+}
+
+.input-nova-tarefa {
+  max-width: 520px;
+  border: 1.5px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--bg);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.input-nova-tarefa:focus-within {
+  border-color: var(--verde-medio);
+  box-shadow: 0 0 0 3px rgba(29, 158, 117, 0.14);
+}
+
+.input-nova-tarefa .form-control {
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: var(--font-body);
+  font-size: 15px;
+  color: var(--text-primary);
+  padding: 0.8rem 1.1rem;
+  box-shadow: none;
+}
+
+.input-nova-tarefa .form-control::placeholder {
+  color: var(--text-muted);
+}
+
+.btn-adicionar {
+  background: var(--verde-escuro);
+  color: #ffffff;
+  font-family: var(--font-display);
+  font-size: 1rem;
+  letter-spacing: 0.08em;
+  border: none;
+  padding: 0 1.5rem;
+  border-radius: 0;
+  transition: background 0.2s, transform 0.1s;
+}
+
+.btn-adicionar:hover {
+  background: var(--verde-medio);
+  color: #ffffff;
+}
+
+.btn-adicionar:active {
+  transform: scale(0.97);
+}
+
+.badge-contador {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.lista-vazia p {
+  color: var(--text-muted);
+  font-size: 15px;
+  padding: 3rem 0;
+}
+
+.card-tarefa {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 1.1rem 1.25rem;
+  transition: transform 0.2s, box-shadow 0.2s;
+  border-left: 5px solid var(--verde-borda);
+}
+
+.card-tarefa:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 18px rgba(15, 110, 86, 0.1);
+}
+
+.card-tarefa.prioridade-alta {
+  border-left-color: #e24b4a;
+  background: #fff8f8;
+}
+
+.card-tarefa.prioridade-media {
+  border-left-color: #d4950f;
+  background: #fffbf0;
+}
+
+.card-tarefa.prioridade-baixa {
+  border-left-color: var(--verde-medio);
+  background: var(--verde-claro);
+}
+
+.tarefa-texto {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-primary);
+  margin-bottom: 0.85rem;
+  line-height: 1.4;
+  word-break: break-word;
+}
+
+.prioridade-label {
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 0.4rem;
+  display: block;
+}
+
+.btn-prioridade {
+  font-size: 12px;
+  font-family: var(--font-body);
+  padding: 3px 10px;
+  border-radius: 5px;
+  border: 1.5px solid transparent;
+  cursor: pointer;
+  transition: opacity 0.15s, transform 0.1s;
+  font-weight: 500;
+}
+
+.btn-prioridade:active {
+  transform: scale(0.96);
+}
+
+.btn-alta {
+  background: #fce8e8;
+  color: #a32d2d;
+  border-color: #f09595;
+}
+
+.btn-alta:hover {
+  background: #f7c1c1;
+}
+
+.btn-media {
+  background: #fef3d8;
+  color: #7a550a;
+  border-color: #f5d08a;
+}
+
+.btn-media:hover {
+  background: #fae7a0;
+}
+
+.btn-baixa {
+  background: var(--verde-claro);
+  color: var(--verde-escuro);
+  border-color: var(--verde-borda);
+}
+
+.btn-baixa:hover {
+  background: #9fe1cb;
+}
+
+.btn-remover {
+  font-size: 12px;
+  font-family: var(--font-body);
+  padding: 3px 10px;
+  border-radius: 5px;
+  border: 1.5px solid #d4e8e0;
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+  font-weight: 400;
+  margin-left: auto;
+}
+
+.btn-remover:hover {
+  background: #fce8e8;
+  color: #a32d2d;
+  border-color: #f09595;
+}
+
+footer {
+  text-align: center;
+  padding: 1.5rem;
+  font-size: 13px;
+  color: var(--text-muted);
+  border-top: 1px solid var(--border);
+  background: var(--surface);
+}
