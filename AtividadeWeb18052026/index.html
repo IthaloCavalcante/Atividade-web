@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Catálogo de Séries</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <main>
+    <header>
+      <p class="eyebrow">TVmaze API</p>
+      <h1>CATÁLOGO DE SÉRIES</h1>
+      <div class="search-bar">
+        <input
+          type="text"
+          id="busca"
+          placeholder="Ex: Breaking Bad, Dark, Friends…"
+          autocomplete="off"
+        >
+        <button id="btn-buscar">BUSCAR</button>
+      </div>
+    </header>
+
+    <div id="feedback"></div>
+    <div id="resultados"></div>
+  </main>
+
+  <footer>
+    Feito por Ithalo Cavalcante
+  </footer>
+
+  <script>
+    const input = document.querySelector("#busca");
+    const btn = document.querySelector("#btn-buscar");
+    const feedback = document.querySelector("#feedback");
+    const resultados = document.querySelector("#resultados");
+
+    function limpar() {
+      resultados.innerHTML = "";
+      feedback.textContent = "";
+      feedback.className = "";
+    }
+
+    function exibirFeedback(mensagem, tipo = "") {
+      feedback.textContent = mensagem;
+      feedback.className = tipo ? "feedback-" + tipo : "";
+    }
+
+    function mostrarResultados(lista) {
+      if (lista.length === 0) {
+        exibirFeedback("Nenhuma série encontrada para essa busca.");
+        return;
+      }
+
+      exibirFeedback(
+        lista.length + " resultado" + (lista.length > 1 ? "s" : "") + " encontrado" + (lista.length > 1 ? "s" : "") + "."
+      );
+
+      lista.forEach(function({ score, show }) {
+        const card = document.createElement("div");
+        card.classList.add("card");
+
+        const imgEl = show.image?.medium
+          ? '<img class="card-img" src="' + show.image.medium + '" alt="Capa de ' + show.name + '" loading="lazy">'
+          : '<div class="card-no-img">Sem imagem</div>';
+
+        const scoreFormatado = score ? (score * 100).toFixed(0) : "–";
+
+        card.innerHTML =
+          imgEl +
+          '<div class="card-body">' +
+            '<p class="card-title">' + show.name + '</p>' +
+            '<span class="card-score">' +
+              '<span class="score-dot"></span>' +
+              'Score ' + scoreFormatado +
+            '</span>' +
+          '</div>';
+
+        resultados.appendChild(card);
+      });
+    }
+
+    async function buscar() {
+      const termo = input.value.trim();
+
+      if (termo === "") {
+        limpar();
+        exibirFeedback("Digite o nome de uma série para buscar.", "error");
+        return;
+      }
+
+      limpar();
+      exibirFeedback("Carregando…");
+      btn.disabled = true;
+
+      try {
+        const resposta = await fetch(
+          "https://api.tvmaze.com/search/shows?q=" + encodeURIComponent(termo)
+        );
+
+        if (!resposta.ok) {
+          throw new Error("Erro HTTP: " + resposta.status);
+        }
+
+        const dados = await resposta.json();
+        feedback.textContent = "";
+        mostrarResultados(dados);
+
+      } catch (erro) {
+        console.error("Erro ao buscar séries:", erro);
+        exibirFeedback("Não foi possível buscar os dados. Verifique sua conexão.", "error");
+
+      } finally {
+        btn.disabled = false;
+      }
+    }
+
+    btn.addEventListener("click", buscar);
+
+    input.addEventListener("keydown", function(e) {
+      if (e.key === "Enter") buscar();
+    });
+  </script>
+
+</body>
+</html>
